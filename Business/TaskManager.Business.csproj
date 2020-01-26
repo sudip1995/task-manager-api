@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.10.1" />
     <PackageReference Include="System.Composition.AttributedModel" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManager.Contracts\TaskManager.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

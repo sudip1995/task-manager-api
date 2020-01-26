@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Business\TaskManager.Business.csproj" />
+    <ProjectReference Include="..\TaskManager.Contracts\TaskManager.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

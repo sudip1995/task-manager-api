@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TaskManager.Business.Services;
+using TaskManager.Contracts.Models;
 
 namespace TaskManager
 {
@@ -26,7 +27,14 @@ namespace TaskManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IBoardService, BoardService>();
+            // requires using Microsoft.Extensions.Options
+            services.Configure<BoardStoreDatabaseSettings>(
+                Configuration.GetSection(nameof(BoardStoreDatabaseSettings)));
+
+            services.AddSingleton<IBoardStoreDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<BoardStoreDatabaseSettings>>().Value);
+
+            services.AddSingleton<IBoardService, BoardService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

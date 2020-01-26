@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Composition;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Business.Services;
+using TaskManager.Contracts.Models;
 
 
 namespace TaskManager.Controllers
@@ -20,16 +17,31 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost("Add")]
-        public IActionResult Add()
+        public IActionResult Add([FromBody] Board board)
         {
             try
             {
-                BoardService.AddBoard();
+                BoardService.Add(board);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e);
+            }
+            
+        }
+
+        [HttpGet("Get")]
+        public IActionResult Get([FromQuery] string title)
+        {
+            try
+            {
+                var board = BoardService.Get(title);
+                return Ok(board);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
             }
             
         }
