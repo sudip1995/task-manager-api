@@ -1,4 +1,6 @@
-﻿using TaskManager.Contracts.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TaskManager.Contracts.Models;
 
 namespace TaskManager.Business.Services
 {
@@ -6,5 +8,6 @@ namespace TaskManager.Business.Services
     {
         void Add(Board board);
         Board Get(string title);
+        Task<List<Board>> GetAll();
     }
 }

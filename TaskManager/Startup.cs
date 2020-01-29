@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GraphiQl;
+using GraphQL;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TaskManager.Business.GraphQL;
 using TaskManager.Business.Services;
 using TaskManager.Contracts.Models;
+using TaskManager.GraphQL;
 
 namespace TaskManager
 {
@@ -34,7 +33,16 @@ namespace TaskManager
             services.AddSingleton<IBoardStoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<BoardStoreDatabaseSettings>>().Value);
 
-            services.AddSingleton<IBoardService, BoardService>();
+            services.AddTransient<IBoardService, BoardService>();
+
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<TaskManagerQuery>();
+            services.AddSingleton<BoardGraphType>();
+            services.AddTransient<TaskManagerDataProvider>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            services.AddSingleton<ISchema>(new TaskManagerSchema(new FuncDependencyResolver(type => serviceProvider.GetService(type))));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -51,6 +59,7 @@ namespace TaskManager
             }
 
             app.UseHttpsRedirection();
+            app.UseGraphiQl("/graphql");
             app.UseMvc();
         }
     }

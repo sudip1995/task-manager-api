@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Composition;
+using System.Threading.Tasks;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 
@@ -21,12 +22,16 @@ namespace TaskManager.Business.Services
         public void Add(Board board)
         {
             _boards.InsertOne(board);
-            Console.WriteLine("Board Added");
         }
 
         public Board Get(string title)
         {
             return _boards.Find(board => board.Title == title).FirstOrDefault();
+        }
+
+        public Task<List<Board>> GetAll()
+        {
+            return _boards.Find(_ => true).ToListAsync();
         }
     }
 }
