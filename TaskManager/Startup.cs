@@ -36,10 +36,13 @@ namespace TaskManager
             services.AddTransient<IBoardService, BoardService>();
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+
             services.AddSingleton<TaskManagerQuery>();
             services.AddSingleton<TaskManagerMutation>();
+
             services.AddSingleton<BoardGraphType>();
             services.AddSingleton<BoardInputGraphType>();
+
             services.AddTransient<ITaskManagerDataProvider, TaskManagerDataProvider>();
             services.AddTransient<ITaskManagerDataMutator, TaskManagerDataMutator>();
 
