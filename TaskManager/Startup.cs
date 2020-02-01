@@ -35,6 +35,7 @@ namespace TaskManager
 
             services.AddTransient<IBoardService, BoardService>();
             services.AddTransient<IColumnService, ColumnService>();
+            services.AddTransient<ITicketService, TicketService>();
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
 
@@ -45,6 +46,8 @@ namespace TaskManager
             services.AddSingleton<BoardInputGraphType>();
             services.AddSingleton<ColumnGraphType>();
             services.AddSingleton<ColumnInputGraphType>();
+            services.AddSingleton<TicketGraphType>();
+            services.AddSingleton<TicketInputGraphType>();
 
             services.AddTransient<ITaskManagerDataProvider, TaskManagerDataProvider>();
             services.AddTransient<ITaskManagerDataMutator, TaskManagerDataMutator>();

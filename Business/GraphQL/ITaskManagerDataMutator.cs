@@ -6,5 +6,6 @@ namespace TaskManager.Business.GraphQL
     {
         Board AddBoard(Board board);
         Column AddColumn(Column column);
+        Ticket AddTicket(Ticket ticket);
     }
 }

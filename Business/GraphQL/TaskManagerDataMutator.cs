@@ -7,12 +7,15 @@ namespace TaskManager.Business.GraphQL
     {
         public IBoardService BoardService { get; set; }
         public IColumnService ColumnService { get; set; }
+        public ITicketService TicketService { get; set; }
 
         public TaskManagerDataMutator(IBoardService boardService,
-            IColumnService columnService)
+            IColumnService columnService,
+            ITicketService ticketService)
         {
             BoardService = boardService;
             ColumnService = columnService;
+            TicketService = ticketService;
         }
         public Board AddBoard(Board board)
         {
@@ -22,6 +25,11 @@ namespace TaskManager.Business.GraphQL
         public Column AddColumn(Column column)
         {
             return ColumnService.Add(column);
+        }
+
+        public Ticket AddTicket(Ticket ticket)
+        {
+            return TicketService.Add(ticket);
         }
     }
 }

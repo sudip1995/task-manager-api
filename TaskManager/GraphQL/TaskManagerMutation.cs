@@ -27,6 +27,15 @@ namespace TaskManager.GraphQL
                     var column = ctx.GetArgument<Column>("column");
                     return taskManagerDataMutator.AddColumn(column);
                 });
+            Field<TicketGraphType>(
+                "addTicket",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<TicketInputGraphType>> {Name = "ticket"}),
+                resolve: ctx =>
+                {
+                    var ticket = ctx.GetArgument<Ticket>("ticket");
+                    return taskManagerDataMutator.AddTicket(ticket);
+                });
         }
     }
 }

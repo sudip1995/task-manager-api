@@ -16,7 +16,7 @@ namespace TaskManager.Business.Services
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _columns = database.GetCollection<Column>(settings.ColumnConnectionName);
+            _columns = database.GetCollection<Column>(settings.ColumnCollectionName);
             BoardService = boardService;
         }
         public List<Column> GetAll(string boardId)
@@ -36,6 +36,11 @@ namespace TaskManager.Business.Services
             column.Order = columnCount;
             _columns.InsertOne(column);
             return column;
+        }
+
+        public Column Get(string columnId)
+        {
+            return _columns.Find(column => column.Id == columnId).FirstOrDefault();
         }
     }
 }

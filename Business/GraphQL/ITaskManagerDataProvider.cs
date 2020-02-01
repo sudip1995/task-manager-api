@@ -9,5 +9,6 @@ namespace TaskManager.Business.GraphQL
         Task<List<Board>> GetBoards();
         Task<Board> GetBoard(string id);
         Task<List<Column>> GetColumns(string boardId);
+        Task<List<Ticket>> GetTickets(string columnId);
     }
 }

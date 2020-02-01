@@ -8,13 +8,15 @@ namespace TaskManager.Business.GraphQL
 {
     public class ColumnGraphType: ObjectGraphType<Column>
     {
-        public ColumnGraphType()
+        public ColumnGraphType(ITaskManagerDataProvider taskManagerDataProvider)
         {
             Name = "Column";
             Field(o => o.Id);
             Field(o => o.Title);
             Field(o => o.BoardId);
             Field(o => o.Order);
+            Field<ListGraphType<TicketGraphType>>("tickets",
+                resolve: ctx => taskManagerDataProvider.GetTickets(ctx.Source.Id));
         }
     }
 }

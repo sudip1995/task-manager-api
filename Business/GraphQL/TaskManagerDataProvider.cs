@@ -9,12 +9,15 @@ namespace TaskManager.Business.GraphQL
     {
         public IBoardService BoardService { get; set; }
         public IColumnService ColumnService { get; set; }
+        public ITicketService TicketService { get; set; }
 
         public TaskManagerDataProvider(IBoardService boardService,
-            IColumnService columnService)
+            IColumnService columnService,
+            ITicketService ticketService)
         {
             BoardService = boardService;
             ColumnService = columnService;
+            TicketService = ticketService;
         }
         public Task<List<Board>> GetBoards()
         {
@@ -29,6 +32,11 @@ namespace TaskManager.Business.GraphQL
         public Task<List<Column>> GetColumns(string boardId)
         {
             return Task.FromResult(ColumnService.GetAll(boardId));
+        }
+
+        public Task<List<Ticket>> GetTickets(string columnId)
+        {
+            return Task.FromResult(TicketService.GetAll(columnId));
         }
     }
 }
