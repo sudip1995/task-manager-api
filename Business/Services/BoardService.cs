@@ -19,9 +19,10 @@ namespace TaskManager.Business.Services
             _boards = database.GetCollection<Board>(settings.BoardCollectionName);
         }
 
-        public void Add(Board board)
+        public Board Add(Board board)
         {
             _boards.InsertOne(board);
+            return board;
         }
 
         public Board Get(string id)

@@ -16,13 +16,12 @@ namespace TaskManager.Controllers
             BoardService = boardService;
         }
 
-        [HttpPost("Add")]
+        [HttpPost("AddBoard")]
         public IActionResult Add([FromBody] Board board)
         {
             try
             {
-                BoardService.Add(board);
-                return Ok();
+                return Ok(BoardService.Add(board));
             }
             catch (Exception e)
             {

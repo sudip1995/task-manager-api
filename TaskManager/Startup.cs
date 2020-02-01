@@ -37,8 +37,11 @@ namespace TaskManager
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<TaskManagerQuery>();
+            services.AddSingleton<TaskManagerMutation>();
             services.AddSingleton<BoardGraphType>();
+            services.AddSingleton<BoardInputGraphType>();
             services.AddTransient<ITaskManagerDataProvider, TaskManagerDataProvider>();
+            services.AddTransient<ITaskManagerDataMutator, TaskManagerDataMutator>();
 
             var serviceProvider = services.BuildServiceProvider();
             services.AddSingleton<ISchema>(new TaskManagerSchema(new FuncDependencyResolver(type => serviceProvider.GetService(type))));
