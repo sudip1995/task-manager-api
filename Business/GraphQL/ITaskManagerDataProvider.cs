@@ -7,5 +7,6 @@ namespace TaskManager.Business.GraphQL
     public interface ITaskManagerDataProvider
     {
         Task<List<Board>> GetBoards();
+        Task<Board> GetBoard(string id);
     }
 }

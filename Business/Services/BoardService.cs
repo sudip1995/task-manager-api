@@ -24,9 +24,9 @@ namespace TaskManager.Business.Services
             _boards.InsertOne(board);
         }
 
-        public Board Get(string title)
+        public Board Get(string id)
         {
-            return _boards.Find(board => board.Title == title).FirstOrDefault();
+            return _boards.Find(board => board.Id == id).FirstOrDefault();
         }
 
         public Task<List<Board>> GetAll()

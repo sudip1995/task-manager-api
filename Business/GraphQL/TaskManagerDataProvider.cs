@@ -17,5 +17,10 @@ namespace TaskManager.Business.GraphQL
         {
             return BoardService.GetAll();
         }
+
+        public Task<Board> GetBoard(string id)
+        {
+            return Task.FromResult(BoardService.Get(id));
+        }
     }
 }

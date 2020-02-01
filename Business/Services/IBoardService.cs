@@ -7,7 +7,7 @@ namespace TaskManager.Business.Services
     public interface IBoardService
     {
         void Add(Board board);
-        Board Get(string title);
+        Board Get(string id);
         Task<List<Board>> GetAll();
     }
 }

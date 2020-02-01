@@ -10,6 +10,10 @@ namespace TaskManager.GraphQL
             Field<ListGraphType<BoardGraphType>>(
                 "boards",
                 resolve: ctx => dataProvider.GetBoards());
+            Field<BoardGraphType>(
+                "board",
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "id"}),
+            resolve: ctx => dataProvider.GetBoard(ctx.GetArgument<string>("id")));
         }
     }
 }
