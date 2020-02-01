@@ -27,13 +27,14 @@ namespace TaskManager
         public void ConfigureServices(IServiceCollection services)
         {
             // requires using Microsoft.Extensions.Options
-            services.Configure<BoardStoreDatabaseSettings>(
-                Configuration.GetSection(nameof(BoardStoreDatabaseSettings)));
+            services.Configure<TaskManagerStoreDatabaseSettings>(
+                Configuration.GetSection(nameof(TaskManagerStoreDatabaseSettings)));
 
-            services.AddSingleton<IBoardStoreDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<BoardStoreDatabaseSettings>>().Value);
+            services.AddSingleton<ITaskManagerStoreDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<TaskManagerStoreDatabaseSettings>>().Value);
 
             services.AddTransient<IBoardService, BoardService>();
+            services.AddTransient<IColumnService, ColumnService>();
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
 
@@ -42,6 +43,8 @@ namespace TaskManager
 
             services.AddSingleton<BoardGraphType>();
             services.AddSingleton<BoardInputGraphType>();
+            services.AddSingleton<ColumnGraphType>();
+            services.AddSingleton<ColumnInputGraphType>();
 
             services.AddTransient<ITaskManagerDataProvider, TaskManagerDataProvider>();
             services.AddTransient<ITaskManagerDataMutator, TaskManagerDataMutator>();

@@ -11,7 +11,7 @@ namespace TaskManager.Business.Services
     {
         private readonly IMongoCollection<Board> _boards;
 
-        public BoardService(IBoardStoreDatabaseSettings settings)
+        public BoardService(ITaskManagerStoreDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
@@ -30,9 +30,9 @@ namespace TaskManager.Business.Services
             return _boards.Find(board => board.Id == id).FirstOrDefault();
         }
 
-        public Task<List<Board>> GetAll()
+        public List<Board> GetAll()
         {
-            return _boards.Find(_ => true).ToListAsync();
+            return _boards.Find(_ => true).ToList();
         }
     }
 }

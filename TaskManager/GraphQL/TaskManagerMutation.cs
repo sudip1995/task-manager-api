@@ -18,6 +18,15 @@ namespace TaskManager.GraphQL
                     var board = ctx.GetArgument<Board>("board");
                     return taskManagerDataMutator.AddBoard(board);
                 });
+            Field<ColumnGraphType>(
+                "addColumn",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<ColumnInputGraphType>> {Name = "column"}),
+                resolve: ctx =>
+                {
+                    var column = ctx.GetArgument<Column>("column");
+                    return taskManagerDataMutator.AddColumn(column);
+                });
         }
     }
 }

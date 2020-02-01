@@ -8,6 +8,6 @@ namespace TaskManager.Business.Services
     {
         Board Add(Board board);
         Board Get(string id);
-        Task<List<Board>> GetAll();
+        List<Board> GetAll();
     }
 }
