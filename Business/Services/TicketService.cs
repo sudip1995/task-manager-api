@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
+using TaskManager.Library;
 
 namespace TaskManager.Business.Services
 {
@@ -10,13 +11,13 @@ namespace TaskManager.Business.Services
         private readonly IMongoCollection<Ticket> _tickets;
         public IColumnService ColumnService { get; set; }
 
-        public TicketService(ITaskManagerStoreDatabaseSettings settings,
-            IColumnService columnService)
+        public TicketService(IColumnService columnService)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            var connectionString = ConfigurationHelper.Instance.GetConfig<string>("DatabaseSettings:ConnectionString");
+            var client = new MongoClient(connectionString);
+            var database = client.GetDatabase(ConfigurationHelper.Instance.GetConfig<string>("DatabaseSettings:DatabaseName"));
 
-            _tickets = database.GetCollection<Ticket>(settings.TicketCollectionName);
+            _tickets = database.GetCollection<Ticket>($"{typeof(Ticket).Name}");
 
             ColumnService = columnService;
         }

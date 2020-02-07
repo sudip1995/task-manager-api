@@ -11,28 +11,25 @@ using TaskManager.Business.GraphQL;
 using TaskManager.Business.Services;
 using TaskManager.Contracts.Models;
 using TaskManager.GraphQL;
+using TaskManager.Library;
 
 namespace TaskManager
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment Environment { get; }
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
+            ConfigurationHelper.Instance.AttachConfigurationProvider(configuration);
+            ConfigurationHelper.Instance.IsDevelopment = environment.IsDevelopment();
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // requires using Microsoft.Extensions.Options
-            services.Configure<TaskManagerStoreDatabaseSettings>(
-                Configuration.GetSection(nameof(TaskManagerStoreDatabaseSettings)));
-
-            services.AddSingleton<ITaskManagerStoreDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<TaskManagerStoreDatabaseSettings>>().Value);
-
             services.AddTransient<IBoardService, BoardService>();
             services.AddTransient<IColumnService, ColumnService>();
             services.AddTransient<ITicketService, TicketService>();

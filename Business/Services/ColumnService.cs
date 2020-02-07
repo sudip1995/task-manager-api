@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
+using TaskManager.Library;
 
 namespace TaskManager.Business.Services
 {
@@ -10,13 +11,13 @@ namespace TaskManager.Business.Services
         private readonly IMongoCollection<Column> _columns;
         public IBoardService BoardService { get; set; }
 
-        public ColumnService(ITaskManagerStoreDatabaseSettings settings,
-            IBoardService boardService)
+        public ColumnService(IBoardService boardService)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            var connectionString = ConfigurationHelper.Instance.GetConfig<string>("DatabaseSettings:ConnectionString");
+            var client = new MongoClient(connectionString);
+            var database = client.GetDatabase(ConfigurationHelper.Instance.GetConfig<string>("DatabaseSettings:DatabaseName"));
 
-            _columns = database.GetCollection<Column>(settings.ColumnCollectionName);
+            _columns = database.GetCollection<Column>($"{typeof(Column).Name}");
             BoardService = boardService;
         }
         public List<Column> GetAll(string boardId)
