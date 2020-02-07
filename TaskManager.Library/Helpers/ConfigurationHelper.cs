@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace TaskManager.Library
+namespace TaskManager.Library.Helpers
 {
     public class ConfigurationHelper: IConfigurationHelper
     {
@@ -37,5 +37,8 @@ namespace TaskManager.Library
         {
             return (T) _configuration.GetSection(key).Get<T>();
         }
+
+        // Indexer in C#
+        public string this[string key] => GetConfig<string>(key);
     }
 }

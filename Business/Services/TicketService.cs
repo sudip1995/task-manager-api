@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library;
+using TaskManager.Library.Extensions;
+using TaskManager.Library.Helpers;
 
 namespace TaskManager.Business.Services
 {
@@ -13,9 +15,10 @@ namespace TaskManager.Business.Services
 
         public TicketService(IColumnService columnService)
         {
-            var connectionString = ConfigurationHelper.Instance.GetConfig<string>("DatabaseSettings:ConnectionString");
+            var connectionString = ConfigurationHelper.Instance.GetDatabaseConnectionString();
             var client = new MongoClient(connectionString);
-            var database = client.GetDatabase(ConfigurationHelper.Instance.GetConfig<string>("DatabaseSettings:DatabaseName"));
+            var databaseName = ConfigurationHelper.Instance.GetDatabaseName();
+            var database = client.GetDatabase(databaseName);
 
             _tickets = database.GetCollection<Ticket>($"{typeof(Ticket).Name}");
 
