@@ -25,7 +25,6 @@ namespace TaskManager.Business.Services
             var database = client.GetDatabase(databaseName);
 
             _columns = database.GetCollection<Column>($"{typeof(Column).Name}");
-            BoardService = IocContainer.Instance.Resolve<IBoardService>();
         }
         public List<Column> GetAll(string boardId)
         {
