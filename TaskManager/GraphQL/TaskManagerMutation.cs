@@ -40,6 +40,39 @@ namespace TaskManager.GraphQL
                     var ticket = ctx.GetArgument<Ticket>("ticket");
                     return taskManagerDataMutator.AddTicket(ticket, columnId);
                 });
+            Field<BoardGraphType>(
+                "updateBoard",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id"},
+                    new QueryArgument<NonNullGraphType<BoardInputGraphType>> {Name = "board"}),
+                resolve: ctx =>
+                {
+                    var id = ctx.GetArgument<string>("id");
+                    var board = ctx.GetArgument<Board>("board");
+                    return taskManagerDataMutator.UpdateBoard(id, board);
+                });
+            Field<ColumnGraphType>(
+                "updateColumn",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id" },
+                    new QueryArgument<NonNullGraphType<ColumnInputGraphType>> {Name = "column"}),
+                resolve: ctx =>
+                {
+                    var id = ctx.GetArgument<string>("id");
+                    var column = ctx.GetArgument<Column>("column");
+                    return taskManagerDataMutator.UpdateColumn(id, column);
+                });
+            Field<TicketGraphType>(
+                "updateTicket",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id" },
+                    new QueryArgument<NonNullGraphType<TicketInputGraphType>> {Name = "ticket"}),
+                resolve: ctx =>
+                {
+                    var id = ctx.GetArgument<string>("id");
+                    var ticket = ctx.GetArgument<Ticket>("ticket");
+                    return taskManagerDataMutator.UpdateTicket(id, ticket);
+                });
         }
     }
 }

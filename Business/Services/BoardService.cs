@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
+using GraphQL;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library;
@@ -43,6 +45,21 @@ namespace TaskManager.Business.Services
         public List<Board> GetAll()
         {
             return _boards.Find(_ => true).ToList();
+        }
+
+        public Board Update(string id, Board board)
+        {
+            var currentBoard = Get(id);
+            var filter = Builders<Board>.Filter.Eq(b => b.Id, id);
+            var updatedBoard = new Board();
+
+            foreach (var propertyInfo in board.GetType().GetProperties())
+            {
+                updatedBoard.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedBoard, board.GetPropertyValue(propertyInfo.Name) ?? currentBoard.GetPropertyValue(propertyInfo.Name));
+            }
+
+            _boards.ReplaceOne(filter, updatedBoard);
+            return updatedBoard;
         }
     }
 }

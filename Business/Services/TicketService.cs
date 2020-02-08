@@ -24,6 +24,10 @@ namespace TaskManager.Business.Services
 
             _tickets = database.GetCollection<Ticket>($"{typeof(Ticket).Name}");
         }
+        public Ticket Get(string id)
+        {
+            return _tickets.Find(ticket => ticket.Id == id).FirstOrDefault();
+        }
 
         public List<Ticket> GetAll(string columnId)
         {
@@ -47,6 +51,12 @@ namespace TaskManager.Business.Services
 
             _tickets.InsertOne(ticket);
             return ticket;
+        }
+
+        public Ticket Update(string id, Ticket ticket)
+        {
+            var currentTicket = Get(id);
+            return currentTicket;
         }
     }
 }

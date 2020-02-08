@@ -30,5 +30,20 @@ namespace TaskManager.Business.GraphQL
         {
             return TicketService.Add(ticket, columnId);
         }
+
+        public Board UpdateBoard(string id, Board board)
+        {
+            return BoardService.Update(id, board);
+        }
+
+        public Column UpdateColumn(string id, Column column)
+        {
+            return ColumnService.Update(id, column);
+        }
+
+        public Ticket UpdateTicket(string id, Ticket ticket)
+        {
+            return TicketService.Update(id, ticket);
+        }
     }
 }

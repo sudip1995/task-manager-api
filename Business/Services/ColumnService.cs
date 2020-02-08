@@ -49,9 +49,15 @@ namespace TaskManager.Business.Services
             return column;
         }
 
-        public Column Get(string columnId)
+        public Column Get(string id)
         {
-            return _columns.Find(column => column.Id == columnId).FirstOrDefault();
+            return _columns.Find(column => column.Id == id).FirstOrDefault();
+        }
+
+        public Column Update(string id, Column column)
+        {
+            var currentColumn = Get(id);
+            return currentColumn;
         }
     }
 }

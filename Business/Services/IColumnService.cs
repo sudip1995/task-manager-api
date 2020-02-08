@@ -7,6 +7,7 @@ namespace TaskManager.Business.Services
     {
         List<Column> GetAll(string boardId);
         Column Add(Column column, string boardId);
-        Column Get(string columnId);
+        Column Get(string id);
+        Column Update(string id, Column column);
     }
 }

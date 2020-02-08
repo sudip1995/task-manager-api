@@ -9,5 +9,6 @@ namespace TaskManager.Business.Services
         Board Add(Board board);
         Board Get(string id);
         List<Board> GetAll();
+        Board Update(string id, Board board);
     }
 }
