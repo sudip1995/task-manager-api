@@ -6,6 +6,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
+    <PackageReference Include="System.Composition.Runtime" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Composition.Hosting">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\system.composition.hosting\1.0.31\lib\netstandard1.0\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\system.composition.typedparts\1.0.31\lib\netstandard1.0\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

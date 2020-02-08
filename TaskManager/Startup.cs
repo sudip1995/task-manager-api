@@ -13,6 +13,7 @@ using TaskManager.Contracts.Models;
 using TaskManager.GraphQL;
 using TaskManager.Library;
 using TaskManager.Library.Helpers;
+using TaskManager.Library.Ioc;
 
 namespace TaskManager
 {
@@ -31,9 +32,7 @@ namespace TaskManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IBoardService, BoardService>();
-            services.AddTransient<IColumnService, ColumnService>();
-            services.AddTransient<ITicketService, TicketService>();
+            IocContainer.Instance.AddAllAssemblies();
 
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
 

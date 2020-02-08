@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
-using TaskManager.Library;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
 
 namespace TaskManager.Business.Services
 {
+    [Export(typeof(ITicketService))]
     public class TicketService : ITicketService
     {
         private readonly IMongoCollection<Ticket> _tickets;
+        [Import]
         public IColumnService ColumnService { get; set; }
 
-        public TicketService(IColumnService columnService)
+        public TicketService()
         {
             var connectionString = ConfigurationHelper.Instance.GetDatabaseConnectionString();
             var client = new MongoClient(connectionString);
@@ -21,8 +23,6 @@ namespace TaskManager.Business.Services
             var database = client.GetDatabase(databaseName);
 
             _tickets = database.GetCollection<Ticket>($"{typeof(Ticket).Name}");
-
-            ColumnService = columnService;
         }
 
         public List<Ticket> GetAll(string columnId)

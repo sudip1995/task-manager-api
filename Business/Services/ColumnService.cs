@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
+using TaskManager.Library.Ioc;
 
 namespace TaskManager.Business.Services
 {
+    [Export(typeof(IColumnService))]
     public class ColumnService : IColumnService
     {
         private readonly IMongoCollection<Column> _columns;
+        [Import]
         public IBoardService BoardService { get; set; }
 
-        public ColumnService(IBoardService boardService)
+        public ColumnService()
         {
             var connectionString = ConfigurationHelper.Instance.GetDatabaseConnectionString();
             var client = new MongoClient(connectionString);
@@ -21,7 +25,7 @@ namespace TaskManager.Business.Services
             var database = client.GetDatabase(databaseName);
 
             _columns = database.GetCollection<Column>($"{typeof(Column).Name}");
-            BoardService = boardService;
+            BoardService = IocContainer.Instance.Resolve<IBoardService>();
         }
         public List<Column> GetAll(string boardId)
         {

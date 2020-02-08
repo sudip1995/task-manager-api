@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TaskManager.Business.Services;
 using TaskManager.Contracts.Models;
+using TaskManager.Library.Ioc;
 
 namespace TaskManager.Business.GraphQL
 {
@@ -11,13 +12,11 @@ namespace TaskManager.Business.GraphQL
         public IColumnService ColumnService { get; set; }
         public ITicketService TicketService { get; set; }
 
-        public TaskManagerDataProvider(IBoardService boardService,
-            IColumnService columnService,
-            ITicketService ticketService)
+        public TaskManagerDataProvider()
         {
-            BoardService = boardService;
-            ColumnService = columnService;
-            TicketService = ticketService;
+            BoardService = IocContainer.Instance.Resolve<IBoardService>();
+            ColumnService = IocContainer.Instance.Resolve<IColumnService>();
+            TicketService = IocContainer.Instance.Resolve<ITicketService>();
         }
         public Task<List<Board>> GetBoards()
         {
