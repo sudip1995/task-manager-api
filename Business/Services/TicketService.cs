@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using GraphQL;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library.Extensions;
@@ -56,6 +57,19 @@ namespace TaskManager.Business.Services
         public Ticket Update(string id, Ticket ticket)
         {
             var currentTicket = Get(id);
+            if (currentTicket == null)
+            {
+                throw new Exception($"Can't find any ticket with id {id}");
+            }
+            var filter = Builders<Ticket>.Filter.Eq(o => o.Id, id);
+            var updatedTicket = new Ticket();
+
+            foreach (var propertyInfo in ticket.GetType().GetProperties())
+            {
+                updatedTicket.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedTicket, ticket.GetPropertyValue(propertyInfo.Name) ?? currentTicket.GetPropertyValue(propertyInfo.Name));
+            }
+
+            _tickets.ReplaceOne(filter, updatedTicket);
             return currentTicket;
         }
     }

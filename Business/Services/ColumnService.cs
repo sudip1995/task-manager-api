@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using GraphQL;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library;
@@ -57,7 +58,20 @@ namespace TaskManager.Business.Services
         public Column Update(string id, Column column)
         {
             var currentColumn = Get(id);
-            return currentColumn;
+            if (currentColumn == null)
+            {
+                throw new Exception($"Can't find any column with id {id}");
+            }
+            var filter = Builders<Column>.Filter.Eq(o => o.Id, id);
+            var updatedColumn = new Column();
+
+            foreach (var propertyInfo in column.GetType().GetProperties())
+            {
+                updatedColumn.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedColumn, column.GetPropertyValue(propertyInfo.Name) ?? currentColumn.GetPropertyValue(propertyInfo.Name));
+            }
+
+            _columns.ReplaceOne(filter, updatedColumn);
+            return updatedColumn;
         }
     }
 }

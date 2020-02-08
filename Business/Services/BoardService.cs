@@ -50,7 +50,11 @@ namespace TaskManager.Business.Services
         public Board Update(string id, Board board)
         {
             var currentBoard = Get(id);
-            var filter = Builders<Board>.Filter.Eq(b => b.Id, id);
+            if (currentBoard == null)
+            {
+                throw new Exception($"Can't find any board with id {id}");
+            }
+            var filter = Builders<Board>.Filter.Eq(o => o.Id, id);
             var updatedBoard = new Board();
 
             foreach (var propertyInfo in board.GetType().GetProperties())
