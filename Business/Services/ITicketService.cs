@@ -6,6 +6,6 @@ namespace TaskManager.Business.Services
     public interface ITicketService
     {
         List<Ticket> GetAll(string columnId);
-        Ticket Add(Ticket ticket);
+        Ticket Add(Ticket ticket, string columnId);
     }
 }

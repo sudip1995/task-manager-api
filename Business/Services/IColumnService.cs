@@ -6,7 +6,7 @@ namespace TaskManager.Business.Services
     public interface IColumnService
     {
         List<Column> GetAll(string boardId);
-        Column Add(Column column);
+        Column Add(Column column, string boardId);
         Column Get(string columnId);
     }
 }

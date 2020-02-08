@@ -30,15 +30,19 @@ namespace TaskManager.Business.Services
             return _tickets.Find(ticket => ticket.ColumnId == columnId).ToList();
         }
 
-        public Ticket Add(Ticket ticket)
+        public Ticket Add(Ticket ticket, string columnId)
         {
-            var column = ColumnService.Get(ticket.ColumnId);
+            if (string.IsNullOrWhiteSpace(ticket.Title))
+            {
+                throw new Exception("Cannot add a ticket without title");
+            }
+            var column = ColumnService.Get(columnId);
             if (column == null)
             {
-                throw new Exception($"Column with id {ticket.ColumnId} doesn't exist");
+                throw new Exception($"Column with id {columnId} doesn't exist");
             }
 
-            var ticketCount = GetAll(ticket.ColumnId).Count;
+            var ticketCount = GetAll(columnId).Count;
             ticket.Order = ticketCount;
 
             _tickets.InsertOne(ticket);

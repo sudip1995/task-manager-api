@@ -7,8 +7,8 @@ namespace TaskManager.Business.GraphQL
     {
         public TicketInputGraphType()
         {
-            Field<NonNullGraphType<StringGraphType>>("title");
-            Field<NonNullGraphType<StringGraphType>>("columnId");
+            Field<StringGraphType>("title");
+            Field<StringGraphType>("columnId");
             Field<StringGraphType>("description");
             Field<IntGraphType>("order");
         }

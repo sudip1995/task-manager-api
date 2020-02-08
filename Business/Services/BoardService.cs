@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
 using MongoDB.Driver;
@@ -26,6 +27,10 @@ namespace TaskManager.Business.Services
 
         public Board Add(Board board)
         {
+            if (string.IsNullOrWhiteSpace(board.Title))
+            {
+                throw new Exception("Cannot add a board without title");
+            }
             _boards.InsertOne(board);
             return board;
         }

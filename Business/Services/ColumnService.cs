@@ -31,15 +31,19 @@ namespace TaskManager.Business.Services
             return _columns.Find(column => column.BoardId == boardId).ToList();
         }
 
-        public Column Add(Column column)
+        public Column Add(Column column, string boardId)
         {
-            var board = BoardService.Get(column.BoardId);
+            if (string.IsNullOrWhiteSpace(column.Title))
+            {
+                throw new Exception("Cannot add a column without title");
+            }
+            var board = BoardService.Get(boardId);
             if (board == null)
             {
-                throw new Exception($"Board with id {column.BoardId} doesn't exist");
+                throw new Exception($"Board with id {boardId} doesn't exist");
             }
 
-            var columnCount = GetAll(column.BoardId).Count;
+            var columnCount = GetAll(boardId).Count;
             column.Order = columnCount;
             _columns.InsertOne(column);
             return column;

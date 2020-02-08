@@ -21,14 +21,14 @@ namespace TaskManager.Business.GraphQL
             return BoardService.Add(board);
         }
 
-        public Column AddColumn(Column column)
+        public Column AddColumn(Column column, string boardId)
         {
-            return ColumnService.Add(column);
+            return ColumnService.Add(column, boardId);
         }
 
-        public Ticket AddTicket(Ticket ticket)
+        public Ticket AddTicket(Ticket ticket, string columnId)
         {
-            return TicketService.Add(ticket);
+            return TicketService.Add(ticket, columnId);
         }
     }
 }

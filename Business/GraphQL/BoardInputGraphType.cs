@@ -7,7 +7,7 @@ namespace TaskManager.Business.GraphQL
     {
         public BoardInputGraphType()
         {
-            Field<NonNullGraphType<StringGraphType>>("title");
+            Field<StringGraphType>("title");
         }
     }
 }

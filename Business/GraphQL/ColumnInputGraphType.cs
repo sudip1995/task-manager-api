@@ -10,8 +10,8 @@ namespace TaskManager.Business.GraphQL
     {
         public ColumnInputGraphType()
         {
-            Field<NonNullGraphType<StringGraphType>>("title");
-            Field<NonNullGraphType<StringGraphType>>("boardId");
+            Field<StringGraphType>("title");
+            Field<StringGraphType>("boardId");
             Field<IntGraphType>("order");
         }
     }
