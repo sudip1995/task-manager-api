@@ -52,6 +52,14 @@ namespace TaskManager
             var serviceProvider = services.BuildServiceProvider();
             services.AddSingleton<ISchema>(new TaskManagerSchema(new FuncDependencyResolver(type => serviceProvider.GetService(type))));
 
+            services.AddCors(o => o.AddPolicy("AllowOrigins", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            }));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -66,6 +74,8 @@ namespace TaskManager
             {
                 app.UseHsts();
             }
+
+            app.UseCors("AllowOrigins");
 
             app.UseHttpsRedirection();
             app.UseGraphiQl("/graphql");
