@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.1" />
+    <PackageReference Include="MongoDB.Bson" Version="2.10.1" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.1" />
+    <PackageReference Include="System.Composition.AttributedModel" Version="1.4.0" />
     <PackageReference Include="System.Composition.Runtime" Version="1.4.0" />
   </ItemGroup>
 
