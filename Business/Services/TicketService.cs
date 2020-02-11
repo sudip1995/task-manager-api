@@ -49,7 +49,7 @@ namespace TaskManager.Business.Services
 
             var ticketCount = GetAll(columnId).Count;
             ticket.Order = ticketCount;
-
+            ticket.ColumnId = columnId;
             _tickets.InsertOne(ticket);
             return ticket;
         }

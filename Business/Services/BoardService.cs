@@ -48,13 +48,13 @@ namespace TaskManager.Business.Services
                 throw new Exception($"Can't find any board with id {id}");
             }
 
-            var newBoard = new Board();
+            var updatedBoard = new Board();
 
             foreach (var propertyInfo in board.GetType().GetProperties())
             {
-                newBoard.GetType().GetProperty(propertyInfo.Name)?.SetValue(newBoard, board.GetPropertyValue(propertyInfo.Name) ?? currentBoard.GetPropertyValue(propertyInfo.Name));
+                updatedBoard.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedBoard, board.GetPropertyValue(propertyInfo.Name) ?? currentBoard.GetPropertyValue(propertyInfo.Name));
             }
-            var updatedBoard = Repository.Update(id, newBoard);
+            Repository.Update(id, updatedBoard);
 
             return updatedBoard;
         }

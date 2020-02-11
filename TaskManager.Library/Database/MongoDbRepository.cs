@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
+using System.Linq.Expressions;
 using MongoDB.Driver;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
@@ -54,12 +57,19 @@ namespace TaskManager.Library.Database
             return _collection.Find(_ => true).ToList();
         }
 
-        public TEntity Update(string id, TEntity entity)
+        public void Update(string id, TEntity entity)
         {
             var filter = Builders<TEntity>.Filter.Eq(o => o.Id, id);
 
             _collection.ReplaceOne(filter, entity);
-            return entity;
+        }
+
+        public List<TEntity> GetItemsByCondition(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _collection
+                .AsQueryable<TEntity>()
+                .Where(predicate.Compile())
+                .ToList();
         }
     }
 }

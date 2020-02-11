@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace TaskManager.Library.Database
 {
@@ -7,6 +9,7 @@ namespace TaskManager.Library.Database
         void InsertOne(TEntity entity);
         TEntity GetById(string id);
         List<TEntity> GetAll();
-        TEntity Update(string id, TEntity entity);
+        void Update(string id, TEntity entity);
+        List<TEntity> GetItemsByCondition(Expression<Func<TEntity, bool>> predicate);
     }
 }
