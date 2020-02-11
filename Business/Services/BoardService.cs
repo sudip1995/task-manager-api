@@ -32,7 +32,7 @@ namespace TaskManager.Business.Services
 
         public Board Get(string id)
         {
-            return Repository.GetById(id);
+            return Repository.Get(id);
         }
 
         public List<Board> GetAll()

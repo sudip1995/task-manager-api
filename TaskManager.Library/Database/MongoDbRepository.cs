@@ -47,7 +47,7 @@ namespace TaskManager.Library.Database
             _collection.InsertOne(entity);
         }
 
-        public TEntity GetById(string id)
+        public TEntity Get(string id)
         {
             return _collection.Find(o => o.Id == id).FirstOrDefault();
         }

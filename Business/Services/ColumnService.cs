@@ -45,7 +45,7 @@ namespace TaskManager.Business.Services
 
         public Column Get(string id)
         {
-            return Repository.GetById(id);
+            return Repository.Get(id);
         }
 
         public Column Update(string id, Column column)

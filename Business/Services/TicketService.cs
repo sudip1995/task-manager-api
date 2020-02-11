@@ -4,6 +4,7 @@ using System.Composition;
 using GraphQL;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
+using TaskManager.Library.Database;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
 
@@ -12,27 +13,18 @@ namespace TaskManager.Business.Services
     [Export(typeof(ITicketService))]
     public class TicketService : ITicketService
     {
-        private readonly IMongoCollection<Ticket> _tickets;
+        
         [Import]
         public IColumnService ColumnService { get; set; }
-
-        public TicketService()
-        {
-            var connectionString = ConfigurationHelper.Instance.GetDatabaseConnectionString();
-            var client = new MongoClient(connectionString);
-            var databaseName = ConfigurationHelper.Instance.GetDatabaseName();
-            var database = client.GetDatabase(databaseName);
-
-            _tickets = database.GetCollection<Ticket>($"{typeof(Ticket).Name}");
-        }
+        [Import] public IGenericRepository<Ticket> Repository { get; set; } 
         public Ticket Get(string id)
         {
-            return _tickets.Find(ticket => ticket.Id == id).FirstOrDefault();
+            return Repository.Get(id);
         }
 
         public List<Ticket> GetAll(string columnId)
         {
-            return _tickets.Find(ticket => ticket.ColumnId == columnId).ToList();
+            return Repository.GetItemsByCondition(e => e.ColumnId == columnId);
         }
 
         public Ticket Add(Ticket ticket, string columnId)
@@ -50,7 +42,7 @@ namespace TaskManager.Business.Services
             var ticketCount = GetAll(columnId).Count;
             ticket.Order = ticketCount;
             ticket.ColumnId = columnId;
-            _tickets.InsertOne(ticket);
+            Repository.InsertOne(ticket);
             return ticket;
         }
 
@@ -61,7 +53,6 @@ namespace TaskManager.Business.Services
             {
                 throw new Exception($"Can't find any ticket with id {id}");
             }
-            var filter = Builders<Ticket>.Filter.Eq(o => o.Id, id);
             var updatedTicket = new Ticket();
 
             foreach (var propertyInfo in ticket.GetType().GetProperties())
@@ -69,8 +60,8 @@ namespace TaskManager.Business.Services
                 updatedTicket.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedTicket, ticket.GetPropertyValue(propertyInfo.Name) ?? currentTicket.GetPropertyValue(propertyInfo.Name));
             }
 
-            _tickets.ReplaceOne(filter, updatedTicket);
-            return currentTicket;
+            Repository.Update(id, updatedTicket);
+            return updatedTicket;
         }
     }
 }
