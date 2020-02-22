@@ -1,7 +1,9 @@
-﻿using GraphQL;
+﻿using System.Text;
+using GraphQL;
 using GraphQL.Server;
 using GraphQL.Server.Ui.Playground;
 using GraphQL.Types;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +12,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using TaskManager.Business.GraphQL;
 using TaskManager.GraphQL;
 using TaskManager.Library.Helpers;
@@ -41,6 +44,27 @@ namespace TaskManager
             services.AddSingleton<IDependencyResolver>(s => new
                 FuncDependencyResolver(s.GetRequiredService));
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            var key = Encoding.ASCII.GetBytes("secret");
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "http://localhost:9001";
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        RequireExpirationTime = true
+                    };
+                });
+            services.AddAuthorization();
+
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
 
             services.AddSingleton<ISchema, TaskManagerSchema>();
@@ -64,7 +88,13 @@ namespace TaskManager
                     .AllowAnyMethod();
             }));
 
-            services.AddGraphQL();
+            services.AddGraphQL(options =>
+                {
+                    options.EnableMetrics = true;
+                    options.ExposeExceptions = Environment.IsDevelopment();
+                })
+                .AddUserContextBuilder(httpContext => httpContext.User )
+                .AddGraphTypes();
 
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
@@ -83,10 +113,13 @@ namespace TaskManager
             app.UseCors("AllowOrigins");
 
             //app.UseHttpsRedirection();
-            //app.UseRouting();
+            app.UseRouting();
             //app.UseAuthorization();
 
             //app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseGraphQL<ISchema>("/graphql");
             // use graphql-playground at default url /ui/playground
