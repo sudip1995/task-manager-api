@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition.Convention;
 using System.Composition.Hosting;
 using System.IO;
 using System.Reflection;
@@ -66,6 +67,13 @@ namespace TaskManager.Library.Ioc
                     throw;
                 }
             }
+        }
+
+        public void RegisterSingleton<TI, T>()
+        {
+            var conventions = new ConventionBuilder();
+            conventions.ForType<T>().Export<TI>().Shared();
+            ContainerConfiguration.WithPart(typeof(T), conventions);
         }
 
         private void Create()

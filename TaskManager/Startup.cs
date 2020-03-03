@@ -36,6 +36,9 @@ namespace TaskManager
             {
                 options.AllowSynchronousIO = true;
             });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            IocContainer.Instance.RegisterSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             IocContainer.Instance.AddAllAssemblies();
 
             services.AddSingleton<IDependencyResolver>(s => new

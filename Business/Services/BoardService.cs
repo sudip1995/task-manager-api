@@ -8,8 +8,10 @@ using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library;
 using TaskManager.Library.Database;
+using TaskManager.Library.DataProviders;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
+using TaskManager.Library.Models;
 
 namespace TaskManager.Business.Services
 {
@@ -18,6 +20,8 @@ namespace TaskManager.Business.Services
     {
         [Import] 
         public IGenericRepository<Board> Repository { get; set; }
+        [Import] 
+        public IUserInfoProvider UserInfoProvider { get; set; }
 
         public Board Add(Board board)
         {
@@ -32,11 +36,13 @@ namespace TaskManager.Business.Services
 
         public Board Get(string id)
         {
+            var user = UserInfoProvider.GetUser();
             return Repository.Get(id);
         }
 
         public List<Board> GetAll()
         {
+            var user = UserInfoProvider.GetUser();
             return Repository.GetAll();
         }
 

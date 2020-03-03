@@ -8,5 +8,6 @@ namespace TaskManager.Library.Ioc
         void AddAllAssemblies();
         void AddAssembly(Assembly assembly);
         T Resolve<T>();
+        void RegisterSingleton<TI, T>();
     }
 }

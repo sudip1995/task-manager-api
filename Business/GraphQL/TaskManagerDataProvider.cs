@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using TaskManager.Business.Services;
 using TaskManager.Contracts.Models;
+using TaskManager.Library.DataProviders;
 using TaskManager.Library.Ioc;
 
 namespace TaskManager.Business.GraphQL
