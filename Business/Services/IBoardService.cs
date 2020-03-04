@@ -10,5 +10,6 @@ namespace TaskManager.Business.Services
         Board Get(string id);
         List<Board> GetAll();
         Board Update(string id, Board board);
+        Board MoveColumn(string fromBoardId, string toBoardId, int previousIndex, int currentIndex);
     }
 }

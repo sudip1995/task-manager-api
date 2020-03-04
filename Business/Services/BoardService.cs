@@ -66,5 +66,26 @@ namespace TaskManager.Business.Services
 
             return updatedBoard;
         }
+
+        public Board MoveColumn(string fromBoardId, string toBoardId, int previousIndex, int currentIndex)
+        {
+            var fromBoard = Get(fromBoardId);
+            var column = fromBoard.Columns[previousIndex];
+            fromBoard.Columns.RemoveAt(previousIndex);
+            var toBoard = fromBoard;
+            if (!string.IsNullOrEmpty(toBoardId))
+            {
+                toBoard = Get(toBoardId);
+            }
+
+            toBoard.Columns.Insert(currentIndex, column);
+            Update(fromBoard.Id, fromBoard);
+            if (fromBoard.Id != toBoard.Id)
+            {
+                Update(toBoard.Id, toBoard);
+            }
+
+            return fromBoard;
+        }
     }
 }

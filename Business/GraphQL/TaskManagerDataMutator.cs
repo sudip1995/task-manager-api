@@ -45,5 +45,10 @@ namespace TaskManager.Business.GraphQL
         {
             return TicketService.Update(id, ticket);
         }
+
+        public Board MoveColumn(string fromBoardId, string toBoardId, int previousIndex, int currentIndex)
+        {
+            return BoardService.MoveColumn(fromBoardId, toBoardId, previousIndex, currentIndex);
+        }
     }
 }

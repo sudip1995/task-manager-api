@@ -1,4 +1,5 @@
-﻿using System.Reactive.PlatformServices;
+﻿using System;
+using System.Reactive.PlatformServices;
 using GraphQL.Types;
 using TaskManager.Business.GraphQL;
 using TaskManager.Contracts.Models;
@@ -72,6 +73,21 @@ namespace TaskManager.GraphQL
                     var id = ctx.GetArgument<string>("id");
                     var ticket = ctx.GetArgument<Ticket>("ticket");
                     return taskManagerDataMutator.UpdateTicket(id, ticket);
+                });
+            Field<BoardGraphType>(
+                "moveColumn",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "fromBoardId" },
+                    new QueryArgument<StringGraphType> { Name = "toBoardId" },
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "previousIndex" },
+                    new QueryArgument<NonNullGraphType<IntGraphType>> {Name = "currentIndex" }),
+                resolve: ctx =>
+                {
+                    var fromBoardId = ctx.GetArgument<string>("fromBoardId");
+                    var toBoardId = ctx.GetArgument<string>("toBoardId");
+                    var previousIndex = ctx.GetArgument<int>("previousIndex");
+                    var currentIndex = ctx.GetArgument<int>("currentIndex");
+                    return taskManagerDataMutator.MoveColumn(fromBoardId, toBoardId, previousIndex, currentIndex);
                 });
         }
     }

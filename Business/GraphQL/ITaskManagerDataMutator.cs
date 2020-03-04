@@ -10,5 +10,6 @@ namespace TaskManager.Business.GraphQL
         Board UpdateBoard(string id, Board board);
         Column UpdateColumn(string id, Column column);
         Ticket UpdateTicket(string id, Ticket ticket);
+        Board MoveColumn(string fromBoardId, string toBoardId, int previousIndex, int currentIndex);
     }
 }
