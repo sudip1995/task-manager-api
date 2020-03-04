@@ -7,7 +7,7 @@ namespace TaskManager.Business.Services
     {
         Ticket Get(string id);
         List<Ticket> GetAll(string columnId);
-        Ticket Add(Ticket ticket, string columnId);
+        Ticket Add(string title, string columnId);
         Ticket Update(string id, Ticket ticket);
     }
 }

@@ -16,19 +16,19 @@ namespace TaskManager.Business.GraphQL
             ColumnService = IocContainer.Instance.Resolve<IColumnService>();
             TicketService = IocContainer.Instance.Resolve<ITicketService>();
         }
-        public Board AddBoard(Board board)
+        public Board AddBoard(string title)
         {
-            return BoardService.Add(board);
+            return BoardService.Add(title);
         }
 
-        public Column AddColumn(Column column, string boardId)
+        public Column AddColumn(string title, string boardId)
         {
-            return ColumnService.Add(column, boardId);
+            return ColumnService.Add(title, boardId);
         }
 
-        public Ticket AddTicket(Ticket ticket, string columnId)
+        public Ticket AddTicket(string title, string columnId)
         {
-            return TicketService.Add(ticket, columnId);
+            return TicketService.Add(title, columnId);
         }
 
         public Board UpdateBoard(string id, Board board)

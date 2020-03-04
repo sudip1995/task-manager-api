@@ -23,12 +23,14 @@ namespace TaskManager.Business.Services
         [Import] 
         public IUserInfoProvider UserInfoProvider { get; set; }
 
-        public Board Add(Board board)
+        public Board Add(string title)
         {
-            if (string.IsNullOrWhiteSpace(board.Title))
+            if (string.IsNullOrWhiteSpace(title))
             {
-                throw new Exception("Cannot add a board without title");
+                throw new Exception("Cannot add a title without title");
             }
+
+            var board = new Board(title);
 
             Repository.InsertOne(board);
             return board;
@@ -51,7 +53,7 @@ namespace TaskManager.Business.Services
             var currentBoard = Get(id);
             if (currentBoard == null)
             {
-                throw new Exception($"Can't find any board with id {id}");
+                throw new Exception($"Can't find any title with id {id}");
             }
 
             var updatedBoard = new Board();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
 using GraphQL;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
@@ -13,36 +14,49 @@ namespace TaskManager.Business.Services
     [Export(typeof(ITicketService))]
     public class TicketService : ITicketService
     {
-        
+        [Import]
+        public IBoardService BoardService { get; set; }
         [Import]
         public IColumnService ColumnService { get; set; }
-        [Import] public IGenericRepository<Ticket> Repository { get; set; } 
+        [Import]
+        public IGenericRepository<Board> Repository { get; set; }
+
         public Ticket Get(string id)
         {
-            return Repository.Get(id);
+            var filter = Builders<Board>.Filter.Eq("Columns.Tickets._id", id);
+            var board = Repository.GetItemsByFilter(filter)[0];
+            var column = board.Columns.FirstOrDefault(o => o.Tickets.Exists(t => t.Id == id));
+            return column?.Tickets.FirstOrDefault(o => o.Id == id);
         }
 
         public List<Ticket> GetAll(string columnId)
         {
-            return Repository.GetItemsByCondition(e => e.ColumnId == columnId);
+            var column = ColumnService.Get(columnId);
+            return column.Tickets;
         }
 
-        public Ticket Add(Ticket ticket, string columnId)
+        public Ticket Add(string title, string columnId)
         {
-            if (string.IsNullOrWhiteSpace(ticket.Title))
+            if (string.IsNullOrWhiteSpace(title))
             {
-                throw new Exception("Cannot add a ticket without title");
+                throw new Exception("Cannot add a title without title");
             }
+
             var column = ColumnService.Get(columnId);
             if (column == null)
             {
                 throw new Exception($"Column with id {columnId} doesn't exist");
             }
+            var board = BoardService.Get(column.BoardId);
+            if (board == null)
+            {
+                throw new Exception($"Board with id {column.BoardId} doesn't exist");
+            }
 
-            var ticketCount = GetAll(columnId).Count;
-            ticket.Order = ticketCount;
-            ticket.ColumnId = columnId;
-            Repository.InsertOne(ticket);
+            var ticket = new Ticket(title, columnId);
+            column.AddTicket(ticket);
+            board.UpdateColumn(column);
+            BoardService.Update(board.Id, board);
             return ticket;
         }
 
@@ -60,7 +74,11 @@ namespace TaskManager.Business.Services
                 updatedTicket.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedTicket, ticket.GetPropertyValue(propertyInfo.Name) ?? currentTicket.GetPropertyValue(propertyInfo.Name));
             }
 
-            Repository.Update(id, updatedTicket);
+            var column = ColumnService.Get(ticket.ColumnId);
+            column.UpdateTicket(ticket);
+            var board = BoardService.Get(column.BoardId);
+            board.UpdateColumn(column);
+            BoardService.Update(board.Id, board);
             return updatedTicket;
         }
     }

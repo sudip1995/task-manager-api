@@ -14,7 +14,6 @@ namespace TaskManager.Business.GraphQL
             Field(o => o.Id);
             Field(o => o.Title);
             Field(o => o.BoardId);
-            Field(o => o.Order);
             Field<ListGraphType<TicketGraphType>>("tickets",
                 resolve: ctx => taskManagerDataProvider.GetTickets(ctx.Source.Id));
         }

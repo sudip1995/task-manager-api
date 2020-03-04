@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
@@ -70,6 +71,11 @@ namespace TaskManager.Library.Database
                 .AsQueryable<TEntity>()
                 .Where(predicate.Compile())
                 .ToList();
+        }
+
+        public List<TEntity> GetItemsByFilter(FilterDefinition<TEntity> filter)
+        {
+            return _collection.Find(filter).ToList();
         }
     }
 }

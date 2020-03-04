@@ -11,8 +11,6 @@ namespace TaskManager.Business.GraphQL
             Field(o => o.Id);
             Field(o => o.Title);
             Field(o => o.ColumnId);
-            Field(o => o.Description, true);
-            Field(o => o.Order);
         }
     }
 }

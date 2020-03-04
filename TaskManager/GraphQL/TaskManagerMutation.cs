@@ -12,33 +12,33 @@ namespace TaskManager.GraphQL
             Field<BoardGraphType>(
                 "addBoard",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<BoardInputGraphType>> {Name = "board"}),
+                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "title"}),
                 resolve: ctx =>
                 {
-                    var board = ctx.GetArgument<Board>("board");
-                    return taskManagerDataMutator.AddBoard(board);
+                    var title = ctx.GetArgument<string>("title");
+                    return taskManagerDataMutator.AddBoard(title);
                 });
             Field<ColumnGraphType>(
                 "addColumn",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "boardId"},
-                    new QueryArgument<NonNullGraphType<ColumnInputGraphType>> {Name = "column"}),
+                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "title" }),
                 resolve: ctx =>
                 {
                     var boardId = ctx.GetArgument<string>("boardId");
-                    var column = ctx.GetArgument<Column>("column");
-                    return taskManagerDataMutator.AddColumn(column, boardId);
+                    var title = ctx.GetArgument<string>("title");
+                    return taskManagerDataMutator.AddColumn(title, boardId);
                 });
             Field<TicketGraphType>(
                 "addTicket",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "columnId" },
-                    new QueryArgument<NonNullGraphType<TicketInputGraphType>> {Name = "ticket"}),
+                    new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "title" }),
                 resolve: ctx =>
                 {
                     var columnId = ctx.GetArgument<string>("columnId");
-                    var ticket = ctx.GetArgument<Ticket>("ticket");
-                    return taskManagerDataMutator.AddTicket(ticket, columnId);
+                    var title = ctx.GetArgument<string>("title");
+                    return taskManagerDataMutator.AddTicket(title, columnId);
                 });
             Field<BoardGraphType>(
                 "updateBoard",

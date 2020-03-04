@@ -7,11 +7,17 @@ using TaskManager.Library.Database;
 
 namespace TaskManager.Contracts.Models
 {
-    public class Ticket : ARepositoryItem
+    public class Ticket
     {
-        public string Title { get; set; }
+        public string Id { get; set; }
         public string ColumnId { get; set; }
-        public string Description { get; set; }
-        public int Order { get; set; }
+        public string Title { get; set; }
+        public Ticket() { }
+        public Ticket(string title, string columnId)
+        {
+            Id = Guid.NewGuid().ToString();
+            ColumnId = columnId;
+            Title = title;
+        }
     }
 }
