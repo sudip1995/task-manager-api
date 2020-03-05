@@ -89,6 +89,25 @@ namespace TaskManager.GraphQL
                     var currentIndex = ctx.GetArgument<int>("currentIndex");
                     return taskManagerDataMutator.MoveColumn(fromBoardId, toBoardId, previousIndex, currentIndex);
                 });
+            Field<BoardGraphType>(
+                "moveTicket",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "fromBoardId" },
+                    new QueryArgument<StringGraphType> { Name = "toBoardId" },
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "fromColumnId" },
+                    new QueryArgument<StringGraphType> { Name = "toColumnId" },
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "previousIndex" },
+                    new QueryArgument<NonNullGraphType<IntGraphType>> {Name = "currentIndex" }),
+                resolve: ctx =>
+                {
+                    var fromBoardId = ctx.GetArgument<string>("fromBoardId");
+                    var toBoardId = ctx.GetArgument<string>("toBoardId");
+                    var fromColumnId = ctx.GetArgument<string>("fromColumnId");
+                    var toColumnId = ctx.GetArgument<string>("toColumnId");
+                    var previousIndex = ctx.GetArgument<int>("previousIndex");
+                    var currentIndex = ctx.GetArgument<int>("currentIndex");
+                    return taskManagerDataMutator.MovTicket(fromBoardId, toBoardId, fromColumnId, toColumnId, previousIndex, currentIndex);
+                });
         }
     }
 }

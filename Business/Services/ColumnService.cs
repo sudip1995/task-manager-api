@@ -72,5 +72,46 @@ namespace TaskManager.Business.Services
 
             return updatedColumn;
         }
+
+        public Board MoveTicket(string fromBoardId, string toBoardId, string fromColumnId, string toColumnId, int previousIndex, int currentIndex)
+        {
+            var fromBoard = BoardService.Get(fromBoardId);
+            var fromColumn = fromBoard.Columns.FirstOrDefault(o => o.Id == fromColumnId);
+
+            var ticket = fromColumn.Tickets[previousIndex];
+            fromColumn.Tickets.RemoveAt(previousIndex);
+            fromBoard.UpdateColumn(fromColumn);
+            
+            var toBoard = fromBoard;
+            var toColumn = fromColumn;
+
+            if (!string.IsNullOrEmpty(toBoardId))
+            {
+                if (string.IsNullOrEmpty(toColumnId))
+                {
+                    throw new Exception("Can't move ticket to another board if toColumn not specified");
+                }
+
+                toBoard = BoardService.Get(toBoardId);
+                toColumn = toBoard.Columns.FirstOrDefault(o => o.Id == toColumnId);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(toColumnId))
+                {
+                    toColumn = toBoard.Columns.FirstOrDefault(o => o.Id == toColumnId);
+                }
+            }
+            toColumn.Tickets.Insert(currentIndex, ticket);
+            toBoard.UpdateColumn(toColumn);
+            BoardService.Update(fromBoard.Id, fromBoard);
+            if (fromBoard.Id != toBoard.Id)
+            {
+                BoardService.Update(toBoard.Id, toBoard);
+            }
+
+
+            return toBoard;
+        }
     }
 }

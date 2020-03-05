@@ -9,5 +9,6 @@ namespace TaskManager.Business.Services
         Column Add(string title, string boardId);
         Column Get(string id);
         Column Update(string id, Column column);
+        Board MoveTicket(string fromBoardId, string toBoardId, string fromColumnId, string toColumnId, int previousIndex, int currentIndex);
     }
 }

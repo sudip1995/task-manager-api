@@ -50,5 +50,10 @@ namespace TaskManager.Business.GraphQL
         {
             return BoardService.MoveColumn(fromBoardId, toBoardId, previousIndex, currentIndex);
         }
+
+        public Board MovTicket(string fromBoardId, string toBoardId, string fromColumnId, string toColumnId, int previousIndex, int currentIndex)
+        {
+            return ColumnService.MoveTicket(fromBoardId, toBoardId, fromColumnId, toColumnId, previousIndex, currentIndex);
+        }
     }
 }
