@@ -38,5 +38,15 @@ namespace TaskManager.Business.GraphQL
         {
             return Task.FromResult(TicketService.GetAll(columnId));
         }
+
+        public Task<TicketDetails> GetTicketDetails(string id)
+        {
+            return Task.FromResult(TicketService.GetDetails(id));
+        }
+
+        public Task<List<CheckList>> GetCheckLists(string ticketId)
+        {
+            return Task.FromResult(TicketService.GetCheckLists(ticketId));
+        }
     }
 }

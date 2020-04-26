@@ -102,6 +102,9 @@ namespace TaskManager.Business.Services
                     toColumn = toBoard.Columns.FirstOrDefault(o => o.Id == toColumnId);
                 }
             }
+
+            ticket.ColumnId = toColumn.Id;
+
             toColumn.Tickets.Insert(currentIndex, ticket);
             toBoard.UpdateColumn(toColumn);
             BoardService.Update(fromBoard.Id, fromBoard);

@@ -12,8 +12,12 @@ namespace TaskManager.GraphQL
                 resolve: ctx => dataProvider.GetBoards());
             Field<BoardGraphType>(
                 "board",
-                arguments: new QueryArguments(new QueryArgument<StringGraphType> {Name = "id"}),
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> {Name = "id"}),
             resolve: ctx => dataProvider.GetBoard(ctx.GetArgument<string>("id")));
+            Field<TicketDetailsGraphType>(
+                "ticketDetails",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id" }),
+                resolve: ctx => dataProvider.GetTicketDetails(ctx.GetArgument<string>("id")));
         }
     }
 }

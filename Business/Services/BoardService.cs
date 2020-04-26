@@ -78,6 +78,7 @@ namespace TaskManager.Business.Services
                 toBoard = Get(toBoardId);
             }
 
+            column.BoardId = toBoard.Id;
             toBoard.Columns.Insert(currentIndex, column);
             Update(fromBoard.Id, fromBoard);
             if (fromBoard.Id != toBoard.Id)

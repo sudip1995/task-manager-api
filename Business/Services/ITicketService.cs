@@ -9,5 +9,9 @@ namespace TaskManager.Business.Services
         List<Ticket> GetAll(string columnId);
         Ticket Add(string title, string columnId);
         Ticket Update(string id, Ticket ticket);
+        TicketDetails GetDetails(string id);
+        List<CheckList> GetCheckLists(string ticketId);
+        CheckList AddCheckList(string title, string ticketId);
+        CheckListItem AddCheckListItem(string title, string checklistId);
     }
 }

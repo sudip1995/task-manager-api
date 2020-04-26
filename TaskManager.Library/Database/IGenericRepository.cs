@@ -14,5 +14,6 @@ namespace TaskManager.Library.Database
         void Update(string id, TEntity entity);
         List<TEntity> GetItemsByCondition(Expression<Func<TEntity, bool>> predicate);
         List<TEntity> GetItemsByFilter(FilterDefinition<TEntity> filter);
+        void UpdateOneByFilter(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update);
     }
 }

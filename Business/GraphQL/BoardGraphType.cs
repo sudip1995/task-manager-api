@@ -10,7 +10,7 @@ namespace TaskManager.Business.GraphQL
             Name = "Board";
             Field(o => o.Id);
             Field(o => o.Title);
-            Field<ListGraphType<ColumnGraphType>>("columns", resolve: ctx => taskManagerDataProvider.GetColumns(ctx.Source.Id));
+            Field<ListGraphType<ColumnGraphType>>("columns", resolve: ctx => ctx.Source.Columns);
         }
     }
 }

@@ -77,5 +77,10 @@ namespace TaskManager.Library.Database
         {
             return _collection.Find(filter).ToList();
         }
+
+        public void UpdateOneByFilter(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update)
+        {
+            _collection.UpdateOne(filter, update);
+        }
     }
 }

@@ -12,10 +12,11 @@ namespace TaskManager.Contracts.Models
         public string Id { get; set; }
         public string ColumnId { get; set; }
         public string Title { get; set; }
+        public int CheckListCount { get; set; }
         public Ticket() { }
         public Ticket(string title, string columnId)
         {
-            Id = Guid.NewGuid().ToString();
+            Id = ObjectId.GenerateNewId().ToString();
             ColumnId = columnId;
             Title = title;
         }

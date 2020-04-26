@@ -55,5 +55,15 @@ namespace TaskManager.Business.GraphQL
         {
             return ColumnService.MoveTicket(fromBoardId, toBoardId, fromColumnId, toColumnId, previousIndex, currentIndex);
         }
+
+        public CheckList AddCheckList(string title, string ticketId)
+        {
+            return TicketService.AddCheckList(title, ticketId);
+        }
+
+        public CheckListItem AddCheckListItem(string title, string checklistId)
+        {
+            return TicketService.AddCheckListItem(title, checklistId);
+        }
     }
 }
