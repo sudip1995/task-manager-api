@@ -130,6 +130,28 @@ namespace TaskManager.GraphQL
                     var title = ctx.GetArgument<string>("title");
                     return taskManagerDataMutator.AddCheckListItem(title, checklistId);
                 });
+            Field<CheckListGraphType>(
+                "updateChecklist",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id" },
+                    new QueryArgument<NonNullGraphType<CheckListInputGraphType>> { Name = "checklist" }),
+                resolve: ctx =>
+                {
+                    var id = ctx.GetArgument<string>("id");
+                    var checklist = ctx.GetArgument<CheckList>("checklist");
+                    return taskManagerDataMutator.UpdateCheckList(id, checklist);
+                });
+            Field<CheckListItemGraphType>(
+                "updateChecklistItem",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<StringGraphType>> { Name = "id" },
+                    new QueryArgument<NonNullGraphType<CheckListItemInputGraphType>> { Name = "checklistItem" }),
+                resolve: ctx =>
+                {
+                    var id = ctx.GetArgument<string>("id");
+                    var checklistItem = ctx.GetArgument<CheckListItem>("checklistItem");
+                    return taskManagerDataMutator.UpdateCheckListItem(id, checklistItem);
+                });
         }
     }
 }

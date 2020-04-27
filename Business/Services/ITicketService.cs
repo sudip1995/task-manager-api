@@ -13,5 +13,7 @@ namespace TaskManager.Business.Services
         List<CheckList> GetCheckLists(string ticketId);
         CheckList AddCheckList(string title, string ticketId);
         CheckListItem AddCheckListItem(string title, string checklistId);
+        CheckList UpdateCheckList(string id, CheckList checklist);
+        CheckListItem UpdateCheckListItem(string id, CheckListItem checklistItem);
     }
 }

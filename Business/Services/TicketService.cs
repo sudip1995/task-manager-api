@@ -134,7 +134,60 @@ namespace TaskManager.Business.Services
             return checkListItem;
         }
 
-        
+        public CheckList UpdateCheckList(string id, CheckList checklist)
+        {
+            var currentCheckList = GetCheckList(id);
+            if (currentCheckList == null)
+            {
+                throw new Exception($"Can't find any checkList with id {id}");
+            }
+            var updatedCheckList = new CheckList();
+
+            foreach (var propertyInfo in checklist.GetType().GetProperties())
+            {
+                updatedCheckList.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedCheckList, checklist.GetPropertyValue(propertyInfo.Name) ?? currentCheckList.GetPropertyValue(propertyInfo.Name));
+            }
+
+            var filter = Builders<TicketDetails>.Filter.Eq("CheckLists._id", id);
+            var update = Builders<TicketDetails>.Update;
+            var checkListUpdate = update.Set("CheckLists.$", updatedCheckList);
+
+            TicketDetailsRepository.UpdateOneByFilter(filter, checkListUpdate);
+
+
+            return updatedCheckList;
+        }
+
+        public CheckListItem UpdateCheckListItem(string id, CheckListItem checklistItem)
+        {
+            var currentCheckList = GetCheckListWithChecklistItemId(id);
+            var currentCheckListItem = currentCheckList.CheckListItems.FirstOrDefault(o => o.Id == id);
+            if (currentCheckListItem == null)
+            {
+                throw new Exception($"Can't find any checkListItem with id {id}");
+            }
+            var updatedCheckListItem = new CheckListItem();
+
+            foreach (var propertyInfo in checklistItem.GetType().GetProperties())
+            {
+                updatedCheckListItem.GetType().GetProperty(propertyInfo.Name)?.SetValue(updatedCheckListItem, checklistItem.GetPropertyValue(propertyInfo.Name) ?? currentCheckListItem.GetPropertyValue(propertyInfo.Name));
+            }
+
+            var index = currentCheckList.CheckListItems.FindIndex(o => o.Id == id);
+            if (index != -1)
+            {
+                currentCheckList.CheckListItems[index] = updatedCheckListItem;
+            }
+
+            var filter = Builders<TicketDetails>.Filter.Eq("CheckLists._id", currentCheckList.Id);
+            var update = Builders<TicketDetails>.Update;
+            var checkListUpdate = update.Set("CheckLists.$", currentCheckList);
+
+            TicketDetailsRepository.UpdateOneByFilter(filter, checkListUpdate);
+
+
+            return updatedCheckListItem;
+        }
 
 
         #region PrivateMethod
@@ -154,6 +207,33 @@ namespace TaskManager.Business.Services
                 throw new Exception("Ticket not found");
             }
             var checkList = ticketDetails.CheckLists.FirstOrDefault(o => o.Id == id);
+            return checkList;
+        }
+
+        private object GetCheckListItem(string id)
+        {
+            var filter = Builders<TicketDetails>.Filter.Eq("CheckLists.CheckListItems._id", id);
+            var ticketDetails = TicketDetailsRepository.GetItemsByFilter(filter).FirstOrDefault();
+            if (ticketDetails == null)
+            {
+                throw new Exception("Ticket not found");
+            }
+
+            var checkList = ticketDetails.CheckLists.FirstOrDefault(o => o.CheckListItems.Exists(e => e.Id == id));
+            var checkListItem = checkList?.CheckListItems.FirstOrDefault(o => o.Id == id);
+            return checkListItem;
+        }
+
+        private CheckList GetCheckListWithChecklistItemId(string id)
+        {
+            var filter = Builders<TicketDetails>.Filter.Eq("CheckLists.CheckListItems._id", id);
+            var ticketDetails = TicketDetailsRepository.GetItemsByFilter(filter).FirstOrDefault();
+            if (ticketDetails == null)
+            {
+                throw new Exception("Ticket not found");
+            }
+
+            var checkList = ticketDetails.CheckLists.FirstOrDefault(o => o.CheckListItems.Exists(e => e.Id == id));
             return checkList;
         }
 

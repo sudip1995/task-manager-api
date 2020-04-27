@@ -65,5 +65,15 @@ namespace TaskManager.Business.GraphQL
         {
             return TicketService.AddCheckListItem(title, checklistId);
         }
+
+        public CheckList UpdateCheckList(string id, CheckList checklist)
+        {
+            return TicketService.UpdateCheckList(id, checklist);
+        }
+
+        public CheckListItem UpdateCheckListItem(string id, CheckListItem checklistItem)
+        {
+            return TicketService.UpdateCheckListItem(id, checklistItem);
+        }
     }
 }

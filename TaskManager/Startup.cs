@@ -59,6 +59,8 @@ namespace TaskManager
             services.AddSingleton<TicketDetailsGraphType>();
             services.AddSingleton<CheckListGraphType>();
             services.AddSingleton<CheckListItemGraphType>();
+            services.AddSingleton<CheckListInputGraphType>();
+            services.AddSingleton<CheckListItemInputGraphType>();
 
             services.AddTransient<ITaskManagerDataProvider, TaskManagerDataProvider>();
             services.AddTransient<ITaskManagerDataMutator, TaskManagerDataMutator>();

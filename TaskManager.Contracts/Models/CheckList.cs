@@ -12,6 +12,8 @@ namespace TaskManager.Contracts.Models
             CheckListItems = new List<CheckListItem>();
         }
 
+        public CheckList() { }
+
         public string Id { get; set; }
         public string Title { get; set; }
         public List<CheckListItem> CheckListItems { get; set; }
@@ -24,6 +26,8 @@ namespace TaskManager.Contracts.Models
             Id = Guid.NewGuid().ToString();
             Title = title;
         }
+
+        public CheckListItem() { }
 
         public string Id { get; set; }
         public string Title { get; set; }

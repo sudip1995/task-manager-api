@@ -14,5 +14,7 @@ namespace TaskManager.Business.GraphQL
         Board MovTicket(string fromBoardId, string toBoardId, string fromColumnId, string toColumnId, int previousIndex, int currentIndex);
         CheckList AddCheckList(string title, string ticketId);
         CheckListItem AddCheckListItem(string title, string checklistId);
+        CheckList UpdateCheckList(string id, CheckList checklist);
+        CheckListItem UpdateCheckListItem(string id, CheckListItem checklistItem);
     }
 }
