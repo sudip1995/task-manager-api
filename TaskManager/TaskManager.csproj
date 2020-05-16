@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\graphql.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
@@ -13,12 +17,18 @@
     <PackageReference Include="GraphQL.Server.Core" Version="3.4.0" />
     <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="3.4.0" />
     <PackageReference Include="GraphQL.Server.Ui.Playground" Version="3.4.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.28.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Business\TaskManager.Business.csproj" />
     <ProjectReference Include="..\TaskManager.Contracts\TaskManager.Contracts.csproj" />
     <ProjectReference Include="..\TaskManager.Library\TaskManager.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\graphql.proto" GrpcServices="Server" ProtoRoot="Protos\" />
   </ItemGroup>
 
 </Project>

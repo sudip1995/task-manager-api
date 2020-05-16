@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using System.Composition;
+using GraphQL.Types;
 using TaskManager.Business.GraphQL;
 
 namespace TaskManager.GraphQL

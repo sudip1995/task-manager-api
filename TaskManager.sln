@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Contracts", "Ta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{A669A08C-B296-4969-802E-F9579452D774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Library", "TaskManager.Library\TaskManager.Library.csproj", "{DD09CBA7-215D-422E-812B-AAE709FD5EFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Library", "TaskManager.Library\TaskManager.Library.csproj", "{DD09CBA7-215D-422E-812B-AAE709FD5EFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

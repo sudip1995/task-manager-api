@@ -1,0 +1,37 @@
+﻿syntax = "proto3";
+
+package sudip.graphql.v1;
+
+option csharp_namespace = "TaskManager.Services";
+
+import "google/protobuf/struct.proto";
+
+
+service GraphQLService {
+	rpc Execute(Request) returns (stream Response);
+}
+
+
+message Request {
+	string query = 1;
+	string inputs = 2;
+	string operationName = 3;
+}
+
+message Response {
+	string data = 1;
+	repeated Error errors = 2;
+}
+
+message Error {
+	string message = 1;
+	repeated SourceLocation locations = 2;
+	repeated string path = 3;
+	google.protobuf.Struct extensions = 4;
+}
+
+// The source location of an error.
+message SourceLocation {
+	int32 line = 1;
+	int32 column = 2;
+}

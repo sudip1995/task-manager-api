@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.4" />
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.2" />
     <PackageReference Include="System.Composition.AttributedModel" Version="1.4.0" />
@@ -13,6 +14,12 @@
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.Contracts\TaskManager.Contracts.csproj" />
     <ProjectReference Include="..\TaskManager.Library\TaskManager.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Google.Protobuf">
+      <HintPath>C:\Users\USER\.nuget\packages\google.protobuf\3.11.4\lib\netstandard2.0\Google.Protobuf.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

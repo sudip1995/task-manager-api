@@ -5,7 +5,6 @@ using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +13,7 @@ using TaskManager.Business.GraphQL;
 using TaskManager.GraphQL;
 using TaskManager.Library.Helpers;
 using TaskManager.Library.Ioc;
+using TaskManager.Services;
 
 namespace TaskManager
 {
@@ -74,6 +74,8 @@ namespace TaskManager
 
             services.AddGraphQL();
 
+            services.AddGrpc(o => { o.EnableDetailedErrors = true; });
+
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
@@ -90,11 +92,15 @@ namespace TaskManager
             }
             app.UseCors("AllowOrigins");
 
-            //app.UseHttpsRedirection();
-            //app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseRouting();
             //app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<GraphqlService>();
+                //endpoints.MapDefaultControllerRoute();
+            });
 
             app.UseGraphQL<ISchema>("/graphql");
             // use graphql-playground at default url /ui/playground
