@@ -8,6 +8,7 @@ using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library;
 using TaskManager.Library.Database;
+using TaskManager.Library.DataProviders;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
 using TaskManager.Library.Ioc;
@@ -21,6 +22,7 @@ namespace TaskManager.Business.Services
         public IBoardService BoardService { get; set; }
         [Import]
         public IGenericRepository<Board> Repository { get; set; }
+        [Import] public IUserInfoProvider UserInfoProvider { get; set; }
         public List<Column> GetAll(string boardId)
         {
             var board = BoardService.Get(boardId);
@@ -39,7 +41,8 @@ namespace TaskManager.Business.Services
                 throw new Exception($"Board with id {boardId} doesn't exist");
             }
 
-            var column = new Column(title, boardId);
+            var user = UserInfoProvider.GetUser();
+            var column = new Column(title, boardId, user);
             board.AddColumn(column);
             BoardService.Update(boardId, board);
             return column;

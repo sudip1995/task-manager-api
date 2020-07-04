@@ -30,7 +30,8 @@ namespace TaskManager.Business.Services
                 throw new Exception("Cannot add a title without title");
             }
 
-            var board = new Board(title);
+            var user = UserInfoProvider.GetUser();
+            var board = new Board(title, user);
 
             Repository.InsertOne(board);
             return board;
@@ -38,14 +39,14 @@ namespace TaskManager.Business.Services
 
         public Board Get(string id)
         {
-            var user = UserInfoProvider.GetUser();
             return Repository.Get(id);
         }
 
         public List<Board> GetAll()
         {
             var user = UserInfoProvider.GetUser();
-            return Repository.GetAll();
+            var filter = Builders<Board>.Filter.Eq("CreatedBy", user);
+            return Repository.GetItemsByFilter(filter);
         }
 
         public Board Update(string id, Board board)

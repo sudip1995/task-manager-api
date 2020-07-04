@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TaskManager.Business.GraphQL;
 using TaskManager.GraphQL;
@@ -35,6 +36,7 @@ namespace TaskManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
@@ -47,13 +49,11 @@ namespace TaskManager
             services.AddSingleton<IDependencyResolver>(s => new
                 FuncDependencyResolver(s.GetRequiredService));
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             var key = Encoding.ASCII.GetBytes("secret");
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "http://localhost:9001";
+                    options.Authority = "https://localhost:3001";
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters

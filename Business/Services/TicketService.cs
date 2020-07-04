@@ -6,8 +6,10 @@ using GraphQL;
 using MongoDB.Driver;
 using TaskManager.Contracts.Models;
 using TaskManager.Library.Database;
+using TaskManager.Library.DataProviders;
 using TaskManager.Library.Extensions;
 using TaskManager.Library.Helpers;
+using TaskManager.Library.Models;
 
 namespace TaskManager.Business.Services
 {
@@ -22,6 +24,7 @@ namespace TaskManager.Business.Services
         public IGenericRepository<Board> Repository { get; set; }
         [Import] 
         public IGenericRepository<TicketDetails> TicketDetailsRepository { get; set; }
+        [Import] public IUserInfoProvider UserInfoProvider { get; set; }
 
         public Ticket Get(string id)
         {
@@ -59,7 +62,8 @@ namespace TaskManager.Business.Services
                 throw new Exception($"Board with id {column.BoardId} doesn't exist");
             }
 
-            var ticket = new Ticket(title, columnId);
+            var user = UserInfoProvider.GetUser();
+            var ticket = new Ticket(title, columnId, user);
             column.AddTicket(ticket);
             board.UpdateColumn(column);
             BoardService.Update(board.Id, board);

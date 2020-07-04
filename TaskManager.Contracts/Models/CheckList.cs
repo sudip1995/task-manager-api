@@ -5,18 +5,20 @@ namespace TaskManager.Contracts.Models
 {
     public class CheckList
     {
+        public CheckList() { }
+
+        public string Id { get; set; }
+
+        public string Title { get; set; }
+
+        public List<CheckListItem> CheckListItems { get; set; }
+
         public CheckList(string title)
         {
             Id = Guid.NewGuid().ToString();
             Title = title;
             CheckListItems = new List<CheckListItem>();
         }
-
-        public CheckList() { }
-
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public List<CheckListItem> CheckListItems { get; set; }
     }
 
     public class CheckListItem
