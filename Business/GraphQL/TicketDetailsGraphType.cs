@@ -12,6 +12,18 @@ namespace TaskManager.Business.GraphQL
             Field(o => o.Title);
             Field(o => o.Description);
             Field<ListGraphType<CheckListGraphType>>("checkLists", resolve: ctx => ctx.Source.CheckLists);
+            Field<ListGraphType<AttachmentGraphType>>("attachments", resolve: ctx => ctx.Source.Attachments);
+        }
+    }
+
+    public class AttachmentGraphType : ObjectGraphType<Attachment>
+    {
+        public AttachmentGraphType()
+        {
+            Name = "Attachment";
+            Field(o => o.Id);
+            Field(o => o.FileName);
+            Field(o => o.FileSize);
         }
     }
 

@@ -16,6 +16,8 @@ namespace TaskManager.Contracts.Models
         public int CheckListCount { get; set; }
         public User CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+        public int AttachmentCount { get; set; }
+
         public Ticket() { }
         public Ticket(string title, string columnId, User createdBy)
         {

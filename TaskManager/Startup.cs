@@ -85,6 +85,7 @@ namespace TaskManager
             services.AddSingleton<CheckListItemGraphType>();
             services.AddSingleton<CheckListInputGraphType>();
             services.AddSingleton<CheckListItemInputGraphType>();
+            services.AddSingleton<AttachmentGraphType>();
 
             services.AddTransient<ITaskManagerDataProvider, TaskManagerDataProvider>();
             services.AddTransient<ITaskManagerDataMutator, TaskManagerDataMutator>();
@@ -104,10 +105,11 @@ namespace TaskManager
                 .AddUserContextBuilder(httpContext => httpContext.User )
                 .AddGraphTypes();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -120,14 +122,16 @@ namespace TaskManager
             }
             app.UseCors("AllowOrigins");
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseRouting();
             //app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
-
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapDefaultControllerRoute(); });
+
+            
 
             app.UseGraphQL<ISchema>("/graphql");
             // use graphql-playground at default url /ui/playground
@@ -136,5 +140,7 @@ namespace TaskManager
                 Path = "/ui/playground"
             });
         }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     }
 }

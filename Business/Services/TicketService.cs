@@ -113,7 +113,7 @@ namespace TaskManager.Business.Services
 
             var checkList = new CheckList(title);
 
-            ticketDetails.Add(checkList);
+            ticketDetails.CheckLists.Add(checkList);
             ticket.CheckListCount++;
 
             TicketDetailsRepository.Update(ticketId, ticketDetails);
@@ -193,9 +193,28 @@ namespace TaskManager.Business.Services
             return updatedCheckListItem;
         }
 
+        public Attachment AddAttachment(string ticketId, string objectId, string fileName, long streamLength)
+        {
+            var attachment = new Attachment
+            {
+                Id = objectId,
+                FileName = fileName,
+                FileSize = FileHelper.SizeSuffix(streamLength)
+            };
+            var ticket = Get(ticketId);
+            var ticketDetails = GetDetails(ticketId);
+            ticketDetails.Attachments.Add(attachment);
+            ticket.AttachmentCount++;
+
+            TicketDetailsRepository.Update(ticketId, ticketDetails);
+
+            Update(ticketId, ticket);
+            return attachment;
+        }
+
 
         #region PrivateMethod
-        private void AddTicketDetails(Ticket ticket)
+    private void AddTicketDetails(Ticket ticket)
         {
             var ticketDetails = new TicketDetails {Id = ticket.Id, Title = ticket.Title};
 
@@ -242,6 +261,5 @@ namespace TaskManager.Business.Services
         }
 
         #endregion
-
     }
 }

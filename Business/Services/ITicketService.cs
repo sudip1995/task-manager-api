@@ -15,5 +15,6 @@ namespace TaskManager.Business.Services
         CheckListItem AddCheckListItem(string title, string checklistId);
         CheckList UpdateCheckList(string id, CheckList checklist);
         CheckListItem UpdateCheckListItem(string id, CheckListItem checklistItem);
+        Attachment AddAttachment(string ticketId, string objectId, string fileName, long streamLength);
     }
 }
