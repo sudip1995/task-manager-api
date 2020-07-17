@@ -27,5 +27,11 @@ namespace TaskManager.Controllers
             var response = await AttachmentService.Download(id);
             return response;
         }
+        [HttpDelete("Delete")]
+        public IActionResult Delete([FromQuery] string id)
+        {
+            AttachmentService.Delete(id);
+            return Ok();
+        }
     }
 }

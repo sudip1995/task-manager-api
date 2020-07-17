@@ -8,5 +8,6 @@ namespace TaskManager.Business.Services
     {
         Task<object> Upload(string ticketId, IFormFile data);
         Task<FileStreamResult> Download(string id);
+        Task Delete(string id);
     }
 }

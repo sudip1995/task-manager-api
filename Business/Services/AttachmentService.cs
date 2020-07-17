@@ -93,5 +93,17 @@ namespace TaskManager.Business.Services
 
             return fileStreamResult;
         }
+
+        public async Task Delete(string objectId)
+        {
+            try
+            {
+                await MinIoClient.RemoveObjectAsync(BucketName, objectId);
+            }
+            catch (MinioException e)
+            {
+                Console.WriteLine(e);
+            }
+        }
     }
 }
