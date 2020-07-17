@@ -4,6 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Minio;
 using Minio.Exceptions;
 using TaskManager.Library.DataProviders;
@@ -65,16 +67,23 @@ namespace TaskManager.Business.Services
                 return e.Message;
             }
         }
-        public async Task<object> Download(string objectId)
+        public async Task<FileStreamResult> Download(string objectId)
         {
+            FileStreamResult fileStreamResult = null;
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(objectId, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
             try
             {
                 await MinIoClient.StatObjectAsync(BucketName, objectId);
-
-                await MinIoClient.GetObjectAsync(BucketName, objectId, 
-                    (stream) =>
+                await MinIoClient.GetObjectAsync(BucketName, objectId, (stream) =>
                     {
-                        stream.CopyTo(Console.OpenStandardOutput());
+                        var memoryStream = new MemoryStream(); 
+                        stream.CopyTo(memoryStream);
+                        memoryStream.Position = 0;
+                        fileStreamResult = new FileStreamResult(memoryStream, contentType);
                     });
             }
             catch (MinioException e)
@@ -82,7 +91,7 @@ namespace TaskManager.Business.Services
                 Console.WriteLine("File Download Error: {0}", e.Message);
             }
 
-            return objectId;
+            return fileStreamResult;
         }
     }
 }
